@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Transportation_Optimization", "Transportation_Optimization.vcxproj", "{133EF252-3AB8-46D9-A649-1B3D06F0DB18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Debug|x64.ActiveCfg = Debug|x64
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Debug|x64.Build.0 = Debug|x64
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Debug|x86.ActiveCfg = Debug|Win32
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Debug|x86.Build.0 = Debug|Win32
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Release|x64.ActiveCfg = Release|x64
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Release|x64.Build.0 = Release|x64
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Release|x86.ActiveCfg = Release|Win32
+		{133EF252-3AB8-46D9-A649-1B3D06F0DB18}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D61A2DB-21AA-4A7C-9F92-1F7BE81F97DB}
+	EndGlobalSection
+EndGlobal
