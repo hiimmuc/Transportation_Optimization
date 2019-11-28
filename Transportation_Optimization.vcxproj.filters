@@ -18,14 +18,25 @@
     <ClCompile Include="Main_Project.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hungarian_alorithm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="I_O_file.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Calulateion_func.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hungarian_alorithm.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="draft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="optimize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
