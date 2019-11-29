@@ -35,8 +35,9 @@ char* readline(int lineNumber,const char *txtFile){
     return line;
 }
 
-int* getpos(int line){
-    int pos[2]={NULL,NULL};
+int *getpos(int line){
+    static int pos[2]={NULL,NULL};
+    // int *pos=NULL;
     char*buf=(char*)malloc(strlen(readline(line, "customer.txt"))*sizeof(char));
     
     strcpy(buf,readline(line,"customer.txt"));
@@ -46,15 +47,26 @@ int* getpos(int line){
             pos[1]= buf[i+1]-'0';
             break;       
         }        
-    }    
+    }  
+
     return pos;
 }
+typedef struct{
+    char* name;
+    char* phone;
+    int *cip;
+    int *cfp;
+}customer;
+
 int main(){
-    // getpos(3);
-    printf("%d\n",getpos(1)[0]);
-    printf("%d\n",getpos(3)[1]);
-    printf("%d\n",getpos(4)[0]);
-    printf("%d\n",getpos(4)[1]);
+
+    int numOfCus=5;
+    customer *c=(customer*)malloc(numOfCus*sizeof(customer));
+    c[0].name=readline(1,"customer.txt");
+    c[0].cip=getpos(3);
+    printf("%s\n", c[0].name);
+    printf("%d",*(c[0].cip+1));
+    printf("%d",*(c[0].cip));
 
 
     return 0;
