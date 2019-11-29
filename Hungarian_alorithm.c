@@ -228,6 +228,9 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 	printf_s("\ncrossed mat: \n");
 	print_mat(process_mat, num_of_cols, num_of_rows);
 	copy_mat(mat, crossed_mat,num_of_rows,num_of_cols);//copy crossed mat to temp
+	free_al(crossed_mat, num_of_rows, num_of_cols);
+	free_al(process_mat, num_of_rows, num_of_cols);
+	free(col_zero); free(row_zero); free(crossed_col); free(crossed_row);
 	return num;
 }
 /*==================================================================*/
@@ -287,6 +290,7 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 			}
 		}
 	}
+	free(count_row);
 	return ans;
 }
 /*==================================================================*/
@@ -308,31 +312,31 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	//copy to process mat
 	copy_mat(process_mat, input_mat, num_of_rows, num_of_cols);
 	pre_ans = subtract_mat_1(process_mat, num_of_rows,num_of_cols);
-	printf_s("\nreduced mat:\n");
-	print_mat(pre_ans, num_of_rows, num_of_cols);
+	printf_s("\nreduced mat:\n");//for test
+	print_mat(pre_ans, num_of_rows, num_of_cols);//for test
 	 do {
 		copy_mat(temp, process_mat, num_of_rows, num_of_cols);
 		number_of_crossed_lines = count_crossed_line(temp, num_of_rows, num_of_cols);
-		printf("masked mat:\n");
-		print_mat(temp, num_of_rows, num_of_cols);
-		printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);
+		printf("masked mat:\n");//for test
+		print_mat(temp, num_of_rows, num_of_cols);//for test
+		printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);//for test
 		if (number_of_crossed_lines != num_task) {
 			process_mat = subtract_mat_2(process_mat, temp, num_of_rows, num_of_cols);
-			print_mat(process_mat, num_of_rows, num_of_cols);
+			print_mat(process_mat, num_of_rows, num_of_cols);//for test
 		}
 	} while (number_of_crossed_lines != (num_task));
 		copy_mat(pre_ans, process_mat, num_of_rows, num_of_cols);
-	if (number_of_crossed_lines == (num_task)) {//plus 1 for nondiagonal case
+	if (number_of_crossed_lines == (num_task)) {
 		printf_s("we are done\n");
 		//we can assign
 		pre_ans = assign_mat(process_mat, num_of_rows, num_of_cols);
-		printf_s("assigned mat:");
-		print_mat(pre_ans, num_of_rows, num_of_cols);
+		printf_s("assigned mat:");//for test
+		print_mat(pre_ans, num_of_rows, num_of_cols);//for test
 		//convert to output mat(2xn)
 		for (i = 0; i < num_of_rows; ++i) {
 			for (j = 0; j < num_of_cols; ++j) {
 				if (pre_ans[i][j] == -8) {
-					printf_s("\ncustomer %d will be taken by driver %d", i + 1, j + 1);
+					printf_s("\ncustomer %d will be taken by driver %d", i + 1, j + 1);//for test
 					final_result[0][k] = i+1;
 					final_result[1][k] = j+1;
 					++k;
@@ -340,5 +344,8 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 			}
 		}
 	}
+	free_al(temp, num_of_rows, num_of_cols);
+	free_al(process_mat, num_of_rows, num_of_cols);
+	free_al(pre_ans, num_of_rows, num_of_cols);
 	return final_result;
 }
