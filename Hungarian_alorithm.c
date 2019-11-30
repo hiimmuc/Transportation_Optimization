@@ -60,7 +60,6 @@ int find_min(int *arr, int size) {
 	for (int i = 0; i < size; ++i) {
 		min = min < arr[i] ? min : arr[i];
 	}
-
 	return min;
 }
 //subtract func
