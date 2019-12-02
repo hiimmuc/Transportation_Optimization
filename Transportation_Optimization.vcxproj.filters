@@ -21,15 +21,6 @@
     <ClCompile Include="draft.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main_project.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Calulation_func.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IO_files.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="optimize.h">
