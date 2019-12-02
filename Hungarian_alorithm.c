@@ -2,15 +2,11 @@
 #include<stdlib.h>
 #include<conio.h>
 #include"optimize.h"
-
 //allocate func
 int** allocate(int number_of_row, int number_of_cols) {
 	int** arr = (int**)malloc(number_of_row* sizeof(int*));
 	for (int i = 0; i < number_of_row; ++i) {
 		arr[i] = (int*)calloc(number_of_cols, sizeof(int));
-		if (arr[i] == NULL) {
-			free(arr[i]);
-		}
 	}
 	if (arr == NULL)
 	{
@@ -65,7 +61,8 @@ int find_min(int *arr, int size) {
 	}
 	return min;
 }
-//subtract func
+//===========================MAIN PART====================================//
+//subtract func in step 1 and 2
 int** subtract_mat_1(int** mat, int num_of_rows, int num_of_cols) {
 	int min = 0;
 	int i, j, k = 0;
@@ -93,9 +90,7 @@ int** subtract_mat_1(int** mat, int num_of_rows, int num_of_cols) {
 	free_al(col_arr,num_of_cols,num_of_rows);
 	return mat;
 } 
- //do in step1,2
-/*=======================================================================================*/
- //do in step 4
+//subtract func in step 4
 int** subtract_mat_2(int** mat,int** masked_mat, int num_of_rows, int num_of_cols) {
 	//1 find non_crossed element
 	//2 sort in array
@@ -138,9 +133,12 @@ int** subtract_mat_2(int** mat,int** masked_mat, int num_of_rows, int num_of_col
 	copy_mat(ans, mat,num_of_rows,num_of_cols);
 	return ans;
 }
-//step3
-/*==================================================================*/
+//draw minimun line through all zero elements in step 3
 int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
+	/*1.count the number of zero in each row and col and save it in 2 array col_zero and row_zero
+	  2.draw the line -1 through all row have more zeros than minimun row_zero[i] and through all cols have the zero elements in non-crossed rows
+	  3.create masked mat which present where the crossed lines are and where the intersections of line are
+	  4.count the number of lines and return it*/
 	int num=0;
 	int i, j, k = 0;
 	int* col_zero, * row_zero, * crossed_row, *crossed_col;
@@ -225,14 +223,14 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 			}
 		}
 	}
-	/*printf_s("\ncrossed mat: \n");
-	print_mat(process_mat, num_of_cols, num_of_rows);*///test
+	/*printf_s("\ncrossed mat: \n"); print_mat(process_mat, num_of_cols, num_of_rows);*///test
 	copy_mat(mat, crossed_mat,num_of_rows,num_of_cols);//copy crossed mat to temp
 	free_al(crossed_mat, num_of_rows, num_of_cols);
 	free_al(process_mat, num_of_rows, num_of_cols);
 	free(col_zero); free(row_zero); free(crossed_col); free(crossed_row);
 	return num;
 }
+//if the number of line equal number of tasks, we assign
 /*==================================================================*/
 int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	/*make the assign point become -8(for team8) :D*/
@@ -335,17 +333,14 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	}//the num_of_rows now is same as num_of_cols
 	temp = allocate(num_of_rows, num_of_cols);
 	pre_ans = allocate(num_of_rows, num_of_cols);
-	final_result = allocate(2, num_task);
+	final_result = allocate(num_task, 3);
 //======>step1
 	pre_ans = subtract_mat_1(process_mat, num_of_rows,num_of_cols);
-	printf_s("\nreduced mat:\n");//for test
-	print_mat(pre_ans, num_of_rows, num_of_cols);//for test
+	//printf_s("\nreduced mat:\n"); print_mat(pre_ans, num_of_rows, num_of_cols);//for test
 	 do {
 		copy_mat(temp, process_mat, num_of_rows, num_of_cols);
 		number_of_crossed_lines = count_crossed_line(temp, num_of_rows, num_of_cols);
-		//printf("masked mat:\n");//for test
-		//print_mat(temp, num_of_rows, num_of_cols);//for test
-		printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);
+		//printf("masked mat:\n"); print_mat(temp, num_of_rows, num_of_cols); printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);
 		if (number_of_crossed_lines != num_task) {
 			process_mat = subtract_mat_2(process_mat, temp, num_of_rows, num_of_cols);
 			//print_mat(process_mat, num_of_rows, num_of_cols);//after 2nd subtract//test
@@ -359,12 +354,14 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 		printf_s("assigned mat:");
 		print_mat(pre_ans, num_of_rows, num_of_cols);
 		//convert to output mat(2xn)
+		printf_s("\nresult: \nthe number in square bracket is the order of that person in matrix\n");
 		for (i = 0; i < num_of_rows; ++i) {
 			for (j = 0; j < num_of_cols; ++j) {
 				if (pre_ans[i][j] == -8) {
-					printf_s("\ncustomer %d will be taken by driver %d", i + 1, j + 1);
-					final_result[0][k] = i+1;
-					final_result[1][k] = j+1;
+					printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
+					final_result[k][0] = i;
+					final_result[k][1] = j;
+					final_result[k][2] = input_mat[i][j];
 					++k;
 				}
 			}
