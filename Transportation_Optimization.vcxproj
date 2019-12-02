@@ -127,12 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Calulateion_func.c" />
+    <ClCompile Include="Calulation_func.c" />
     <ClCompile Include="draft.c" />
     <ClCompile Include="Hungarian_alorithm.c" />
-    <ClCompile Include="I_O_file.c" />
-    <ClCompile Include="Main_Project.c" />
-    <ClCompile Include="optimize.cpp" />
+    <ClCompile Include="IO_files.c" />
+    <ClCompile Include="Main_project.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="optimize.h" />
