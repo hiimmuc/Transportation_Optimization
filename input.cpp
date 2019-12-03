@@ -86,15 +86,15 @@ int count(const char *obj){
 }
 /*===============================================*/
 typedef struct{
-    char name[30];
-    char phone[20];
+    char* name;
+    char* phone;
     int cip[2];//customer's initial position
     int cfp[2];//customer's final position
 }customer;
 typedef struct{
-    char name[30];
-    char phone[20];
-    char number_plt[10];
+    char* name;
+    char* phone;
+    char* number_plt;
     int dp[2];//driver's present position
 }driver;
 /*=================================================*/
@@ -102,8 +102,13 @@ customer* construct_c(int num,customer *c){
     //construct all the customer c[i]
     int i;
     for (i=0;i<num;i++){
-        strcpy(c[i].name,readline((1+5*i),"customer.txt"));
-        strcpy(c[i].phone,readline((2+5*i),"customer.txt"));
+        // in this session, the term k+5*i is the information in the 
+        //line number #linenum congruence with k modulo 5
+        //each driver's or customer's information store in 5 lines
+        // so all #linenum in the same congruence group containing the same field
+        // example for customer: names are in line {1,6,11}, phones are in line {2,7,12}, etc..
+        c[i].name=readline((1+5*i),"customer.txt");
+        c[i].phone=readline((2+5*i),"customer.txt");
         c[i].cip[0]=*getpos((3+5*i),"customer.txt");
         c[i].cip[1]=*(getpos((3+5*i),"customer.txt")+1);
         c[i].cfp[0]=*getpos((4+5*i),"customer.txt");
@@ -116,9 +121,9 @@ driver* construct_d(int num,driver *d){
     //construct all the driver d[i]
     int i;
     for (i=0;i<num;i++){
-        strcpy(d[i].name,readline((1+5*i),"driver.txt"));
-        strcpy(d[i].phone,readline((2+5*i),"driver.txt"));
-        strcpy(d[i].number_plt,readline((3+5*i),"driver.txt"));
+        d[i].name=readline((1+5*i),"driver.txt");
+        d[i].phone=readline((2+5*i),"driver.txt");
+        d[i].number_plt=readline((3+5*i),"driver.txt");
         d[i].dp[0]=*getpos((4+5*i),"driver.txt");
         d[i].dp[1]=*(getpos((4+5*i),"driver.txt")+1);
     }
@@ -194,8 +199,6 @@ int main(){
     print_mat(customer_mat,numOfCus,2);
     print_mat(cus_final_mat,numOfCus,2);
     print_mat(driver_mat,numOfDrv,2);
-    // printf_s("%d\n", sizeof(customer));
-    // printf_s("%d",sizeof(*c));
-    // printf_s("%s", readline(12,"customer.txt"));
+    
     return 0;
 }
