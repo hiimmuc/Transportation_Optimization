@@ -22,7 +22,7 @@ void free_al(int** arr,int number_of_rows,int number_of_cols) {
 	}
 	free(arr);
 }
-//print
+//print_mat
 void print_mat(int** arr, int num_of_rows, int num_of_cols)
 {
 	printf_s("\n");
@@ -33,7 +33,7 @@ void print_mat(int** arr, int num_of_rows, int num_of_cols)
 		printf("\n");
 	}
 }
-//scan
+//scan_mat
 int** scan_mat(int** arr, int num_of_rows, int num_of_cols)
 {
 	for (int i = 0; i < num_of_rows; i++) {
