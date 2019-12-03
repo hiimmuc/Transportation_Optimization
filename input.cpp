@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
+#include <malloc.h>
+#include <math.h>
 #include <string>
 
 int actualLength(const char *string) {
 //  return the actual lenght of a string (trailling spaces are not counted)
     while(isspace((unsigned char)string[0]))
         string++;
-    char *final = strdup(string);
+    char *final =(char*)malloc((strlen(string)+1)*sizeof(char));
+    strcpy(final,string);
     int length = strlen(final);
     while(length > 0 && isspace((unsigned char)final[length-1]))
         length--;
@@ -21,7 +25,7 @@ with actual length (no spaces character at the end) */
     int count =1;
     FILE *fileName;
     fileName = fopen(txtFile,"r");//open file #txtFile
-    while (fgets(buf,200,fileName) != NULL){
+    while (fgets(buf,50,fileName) != NULL){
     //get the wanted line by fgets all lines respectively from line #1 to lie #lineNumber
         if (count == lineNumber){
             break;
@@ -34,28 +38,29 @@ with actual length (no spaces character at the end) */
     char *line = (char*)malloc(actualLength(buf)*sizeof(char));
     strcpy(line,buf);
     //so this make 'line' contains a whole line with minimum size
-    delete buf;
+    free (buf);
     fclose(fileName);
     
     return line;
-    delete line;
+    // delete line;
 }
 /*============================================================================*/
 int *getpos(int line, const char* filename){
 //return the ordinate (int x and int y) which has the form [x;y] in a specific line
     static int pos[2]={NULL,NULL};
-    char*buf=(char*)malloc(strlen(readline(line, filename))*sizeof(char));
+    int j;
+    char*buf=(char*)malloc((strlen(readline(line, filename))+1)*sizeof(char));
     
     strcpy(buf,readline(line,filename));
-    for (int i=strlen(buf); i>0; i--){
+    for (j=strlen(buf); j>0; j--){
         // find the ';' character in a line then before ';' is x and after ';' is y 
-        if (buf[i]==';'){
-            pos[0]= buf[i-1]-'0';
-            pos[1]= buf[i+1]-'0';
+        if (buf[j]==';'){
+            pos[0]= buf[j-1]-'0';
+            pos[1]= buf[j+1]-'0';
             break;       
         }        
     }  
-    delete buf;
+    free(buf);
     return pos;
 }
 /*=========================================================*/
@@ -81,15 +86,15 @@ int count(const char *obj){
 }
 /*===============================================*/
 typedef struct{
-    char* name;
-    char* phone;
+    char name[30];
+    char phone[20];
     int cip[2];//customer's initial position
     int cfp[2];//customer's final position
 }customer;
 typedef struct{
-    char* name;
-    char* phone;
-    char* number_plt;
+    char name[30];
+    char phone[20];
+    char number_plt[10];
     int dp[2];//driver's present position
 }driver;
 /*=================================================*/
@@ -97,13 +102,13 @@ customer* construct_c(int num,customer *c){
     //construct all the customer c[i]
     int i;
     for (i=0;i<num;i++){
-        c[i].name=readline((1+5*i),"customer.txt");
-        c[i].phone=readline((2+5*i),"customer.txt");
+        strcpy(c[i].name,readline((1+5*i),"customer.txt"));
+        strcpy(c[i].phone,readline((2+5*i),"customer.txt"));
         c[i].cip[0]=*getpos((3+5*i),"customer.txt");
         c[i].cip[1]=*(getpos((3+5*i),"customer.txt")+1);
         c[i].cfp[0]=*getpos((4+5*i),"customer.txt");
         c[i].cfp[1]=*(getpos((4+5*i),"customer.txt")+1);
-     }
+    }
     return c;
 }
 /*=======================================================*/
@@ -111,9 +116,9 @@ driver* construct_d(int num,driver *d){
     //construct all the driver d[i]
     int i;
     for (i=0;i<num;i++){
-        d[i].name=readline((1+5*i),"driver.txt");
-        d[i].phone=readline((2+5*i),"driver.txt");
-        d[i].number_plt=readline((3+5*i),"driver.txt");
+        strcpy(d[i].name,readline((1+5*i),"driver.txt"));
+        strcpy(d[i].phone,readline((2+5*i),"driver.txt"));
+        strcpy(d[i].number_plt,readline((3+5*i),"driver.txt"));
         d[i].dp[0]=*getpos((4+5*i),"driver.txt");
         d[i].dp[1]=*(getpos((4+5*i),"driver.txt")+1);
     }
@@ -147,10 +152,12 @@ int main(){
     int i;
     int numOfCus=count("customer.txt");//count customers
     int numOfDrv=count("driver.txt");//count drivers
+    // int numOfCus=3;
+    // int numOfDrv=3;
     
-    customer *c=(customer*)malloc(numOfCus*sizeof(customer));
+    customer *c=(customer*)calloc(numOfCus,sizeof(customer));
     // allocate memory for number of customers counted above
-    driver *d=(driver*)malloc(numOfDrv*sizeof(driver));
+    driver *d=(driver*)calloc(numOfDrv,sizeof(driver));
     //same as above
     construct_c(numOfCus,c);
     construct_d(numOfDrv,d);
@@ -187,7 +194,8 @@ int main(){
     print_mat(customer_mat,numOfCus,2);
     print_mat(cus_final_mat,numOfCus,2);
     print_mat(driver_mat,numOfDrv,2);
-
-
+    // printf_s("%d\n", sizeof(customer));
+    // printf_s("%d",sizeof(*c));
+    // printf_s("%s", readline(12,"customer.txt"));
     return 0;
 }
