@@ -1,3 +1,5 @@
+
+//nhom 8: Dang Phuong Nam, Nguyen Tai Hoang,Le Hoang Thinh :D
 #include<stdio.h>
 #include<stdlib.h>
 #include<conio.h>
@@ -236,7 +238,7 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	/*make the assign point become -8(for team8) :D*/
 	int** ans = allocate(num_of_rows, num_of_cols);
-	int i, j, k;
+	int i, j, k, pos = 0;
 	int count = 0, min_num = 0;
 	int num_of_task = num_of_cols;
 	int* count_row;
@@ -254,9 +256,8 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	while (count != num_of_task) {
 		for (i = 0; i < num_of_rows; ++i) {
 			if (count_row[i] == min_num) {
-				for (j = 0; j < num_of_cols; ++j) {
+				for (j = pos; j < num_of_cols; ++j) {
 					if (ans[i][j] == 0) {
-						
 						++count;
 						//draw -1 line through all num of elements in 2 line intersect in ans[i][j]
 						for (k = 0; k < num_of_task; ++k) {
@@ -291,7 +292,7 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	}
 	free(count_row);
 	return ans;
-}
+}//not all case
 /*==================================================================*/
 int** make_square(int** mat, int row, int col) {
 	//num of cus less than num of drivers
@@ -319,6 +320,7 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 {//===> prepare part
 	int i, j, k = 0;
 	int number_of_crossed_lines=0;
+	int temp1 = num_of_rows, temp2 = num_of_cols;
 	int num_task = num_of_rows <= num_of_cols ? num_of_cols : num_of_rows;//num of task equal the bigger one
 	int** process_mat = allocate(num_of_rows, num_of_cols);
 	int** temp;
@@ -362,12 +364,14 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 					printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
 					final_result[k][0] = i;
 					final_result[k][1] = j;
-					final_result[k][2] = input_mat[i][j];
+					final_result[k][2] = input_mat[i][j];//error when 2x3 because input_mat is not square 
 					++k;
 				}
 			}
 		}
 	}
+	num_of_rows = temp1;
+	num_of_cols = temp2;
 	free_al(temp, num_of_rows, num_of_cols);
 	free_al(process_mat, num_of_rows, num_of_cols);
 	free_al(pre_ans, num_of_rows, num_of_cols);
