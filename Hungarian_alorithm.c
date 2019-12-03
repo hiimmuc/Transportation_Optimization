@@ -1,8 +1,9 @@
+
+//nhom 8: Dang Phuong Nam, Nguyen Tai Hoang,Le Hoang Thinh :D
 #include<stdio.h>
 #include<stdlib.h>
 #include<conio.h>
 #include"optimize.h"
-#define NoD 3
 //allocate func
 int** allocate(int number_of_row, int number_of_cols) {
 	int** arr = (int**)malloc(number_of_row* sizeof(int*));
@@ -23,18 +24,18 @@ void free_al(int** arr,int number_of_rows,int number_of_cols) {
 	}
 	free(arr);
 }
-//print
+//print_mat
 void print_mat(int** arr, int num_of_rows, int num_of_cols)
 {
 	printf_s("\n");
-	for (int i = 0; i < num_of_rows; i++) {
-		for (int j = 0; j < num_of_cols; j++) {
+	for (int i = 0; i < num_of_rows; ++i) {
+		for (int j = 0; j < num_of_cols; ++j) {
 			printf("%-4d", arr[i][j]);
 		}
 		printf("\n");
 	}
 }
-//scan
+//scan_mat
 int** scan_mat(int** arr, int num_of_rows, int num_of_cols)
 {
 	for (int i = 0; i < num_of_rows; i++) {
@@ -58,13 +59,14 @@ void copy_mat(int** arr1, int** arr2,int numofrows,int numofcols) {
 int find_min(int *arr, int size) {
 	int min=arr[0];
 	for (int i = 0; i < size; ++i) {
-		min = min < arr[i] ? min : arr[i];
+		min = min <= arr[i] ? min : arr[i];
 	}
 	return min;
 }
-//subtract func
+//===========================MAIN PART====================================//
+//subtract func in step 1 and 2
 int** subtract_mat_1(int** mat, int num_of_rows, int num_of_cols) {
-	int min;
+	int min = 0;
 	int i, j, k = 0;
 	int** col_arr = allocate(num_of_cols, num_of_rows);
 	//subtract rows
@@ -83,18 +85,14 @@ int** subtract_mat_1(int** mat, int num_of_rows, int num_of_cols) {
 	for (i = 0; i < num_of_rows; ++i) {
 		min = find_min(col_arr[i], num_of_cols);
 		for (j = 0; j < num_of_cols; ++j) {
-			if (mat[j][i]!=0) {
-				mat[j][i] = mat[j][i] - min; 
-			}
+			mat[j][i] = mat[j][i] - min; 
 		}
 	}
 	
 	free_al(col_arr,num_of_cols,num_of_rows);
 	return mat;
 } 
- //doin step1,2
-/*=======================================================================================*/
- //do in step 4
+//subtract func in step 4
 int** subtract_mat_2(int** mat,int** masked_mat, int num_of_rows, int num_of_cols) {
 	//1 find non_crossed element
 	//2 sort in array
@@ -137,9 +135,12 @@ int** subtract_mat_2(int** mat,int** masked_mat, int num_of_rows, int num_of_col
 	copy_mat(ans, mat,num_of_rows,num_of_cols);
 	return ans;
 }
-//step3
-/*==================================================================*/
+//draw minimun line through all zero elements in step 3
 int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
+	/*1.count the number of zero in each row and col and save it in 2 array col_zero and row_zero
+	  2.draw the line -1 through all row have more zeros than minimun row_zero[i] and through all cols have the zero elements in non-crossed rows
+	  3.create masked mat which present where the crossed lines are and where the intersections of line are
+	  4.count the number of lines and return it*/
 	int num=0;
 	int i, j, k = 0;
 	int* col_zero, * row_zero, * crossed_row, *crossed_col;
@@ -224,19 +225,19 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 			}
 		}
 	}
-	printf_s("\ncrossed mat: \n");
-	print_mat(process_mat, num_of_cols, num_of_rows);
+	/*printf_s("\ncrossed mat: \n"); print_mat(process_mat, num_of_cols, num_of_rows);*///test
 	copy_mat(mat, crossed_mat,num_of_rows,num_of_cols);//copy crossed mat to temp
 	free_al(crossed_mat, num_of_rows, num_of_cols);
 	free_al(process_mat, num_of_rows, num_of_cols);
 	free(col_zero); free(row_zero); free(crossed_col); free(crossed_row);
 	return num;
 }
+//if the number of line equal number of tasks, we assign
 /*==================================================================*/
 int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	/*make the assign point become -8(for team8) :D*/
 	int** ans = allocate(num_of_rows, num_of_cols);
-	int i, j, k;
+	int i, j, k, pos = 0;
 	int count = 0, min_num = 0;
 	int num_of_task = num_of_cols;
 	int* count_row;
@@ -254,9 +255,8 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	while (count != num_of_task) {
 		for (i = 0; i < num_of_rows; ++i) {
 			if (count_row[i] == min_num) {
-				for (j = 0; j < num_of_cols; ++j) {
+				for (j = pos; j < num_of_cols; ++j) {
 					if (ans[i][j] == 0) {
-						
 						++count;
 						//draw -1 line through all num of elements in 2 line intersect in ans[i][j]
 						for (k = 0; k < num_of_task; ++k) {
@@ -291,37 +291,61 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	}
 	free(count_row);
 	return ans;
-}
+}//not all case
 /*==================================================================*/
-int** make_square(int**mat,int row,int col) {
-	return NULL;//to make the mat become square
+int** make_square(int** mat, int row, int col) {
+	//num of cus less than num of drivers
+	if (row > col) {
+		for (int i = 0; i < row; ++i) {
+			mat[i] = (int*)realloc(mat[i], row * sizeof(int));
+		}
+		for (int i = 0; i < row; ++i) {
+			for (int j = col; j < row; ++j) {
+				mat[i][j] = 0;
+			}
+		}
+	}
+	//num of driver less than num of cus
+	if (col > row) {
+		mat = (int**)realloc(mat, sizeof(int*) * col);
+		for (int i = row; i < col; ++i) {
+			mat[i] = (int*)calloc(col , sizeof(int));
+		}
+	}
+	return mat;
 }
-//nothing in make square
 /*==================================================================*/
 int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
-{
+{//===> prepare part
 	int i, j, k = 0;
 	int number_of_crossed_lines=0;
-	int num_task = num_of_cols;
-	int** temp= allocate(num_of_cols, num_of_cols);
-	int** pre_ans = allocate(num_of_cols, num_of_cols);
-	int** final_result= allocate(2 , num_of_cols);
+	int temp1 = num_of_rows, temp2 = num_of_cols;
+	int num_task = num_of_rows <= num_of_cols ? num_of_cols : num_of_rows;//num of task equal the bigger one
 	int** process_mat = allocate(num_of_rows, num_of_cols);
-	/*input_mat = make_square(input_mat, num_of_rows, num_of_cols);*/
+	int** temp;
+	int** pre_ans;
+	int** final_result;
 	//copy to process mat
 	copy_mat(process_mat, input_mat, num_of_rows, num_of_cols);
+	//check whether the input_mat is square or not, if not make it squared
+	if (num_of_rows != num_of_cols) {
+		process_mat = make_square(process_mat, num_of_rows, num_of_cols);
+		num_of_cols = num_task;
+		num_of_rows = num_task;
+	}//the num_of_rows now is same as num_of_cols
+	temp = allocate(num_of_rows, num_of_cols);
+	pre_ans = allocate(num_of_rows, num_of_cols);
+	final_result = allocate(num_task, 3);
+//======>step1
 	pre_ans = subtract_mat_1(process_mat, num_of_rows,num_of_cols);
-	printf_s("\nreduced mat:\n");//for test
-	print_mat(pre_ans, num_of_rows, num_of_cols);//for test
+	//printf_s("\nreduced mat:\n"); print_mat(pre_ans, num_of_rows, num_of_cols);//for test
 	 do {
 		copy_mat(temp, process_mat, num_of_rows, num_of_cols);
 		number_of_crossed_lines = count_crossed_line(temp, num_of_rows, num_of_cols);
-		printf("masked mat:\n");//for test
-		print_mat(temp, num_of_rows, num_of_cols);//for test
-		printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);//for test
+		//printf("masked mat:\n"); print_mat(temp, num_of_rows, num_of_cols); printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);
 		if (number_of_crossed_lines != num_task) {
 			process_mat = subtract_mat_2(process_mat, temp, num_of_rows, num_of_cols);
-			print_mat(process_mat, num_of_rows, num_of_cols);//for test
+			//print_mat(process_mat, num_of_rows, num_of_cols);//after 2nd subtract//test
 		}
 	} while (number_of_crossed_lines != (num_task));
 		copy_mat(pre_ans, process_mat, num_of_rows, num_of_cols);
@@ -329,20 +353,24 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 		printf_s("we are done\n");
 		//we can assign
 		pre_ans = assign_mat(process_mat, num_of_rows, num_of_cols);
-		printf_s("assigned mat:");//for test
-		print_mat(pre_ans, num_of_rows, num_of_cols);//for test
+		printf_s("assigned mat:");
+		print_mat(pre_ans, num_of_rows, num_of_cols);
 		//convert to output mat(2xn)
+		printf_s("\nresult: \nthe number in square bracket is the order of that person in matrix\n");
 		for (i = 0; i < num_of_rows; ++i) {
 			for (j = 0; j < num_of_cols; ++j) {
 				if (pre_ans[i][j] == -8) {
-					printf_s("\ncustomer %d will be taken by driver %d", i + 1, j + 1);//for test
-					final_result[0][k] = i+1;
-					final_result[1][k] = j+1;
+					printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
+					final_result[k][0] = i;
+					final_result[k][1] = j;
+					final_result[k][2] = input_mat[i][j];//error when 2x3 because input_mat is not square 
 					++k;
 				}
 			}
 		}
 	}
+	num_of_rows = temp1;
+	num_of_cols = temp2;
 	free_al(temp, num_of_rows, num_of_cols);
 	free_al(process_mat, num_of_rows, num_of_cols);
 	free_al(pre_ans, num_of_rows, num_of_cols);

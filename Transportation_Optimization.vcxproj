@@ -127,14 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Calulateion_func.c" />
+    <ClCompile Include="calculation_func.c" />
     <ClCompile Include="draft.c" />
     <ClCompile Include="Hungarian_alorithm.c" />
-    <ClCompile Include="I_O_file.c" />
-    <ClCompile Include="Main_Project.c" />
-    <ClCompile Include="optimize.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="calculation_func.h" />
     <ClInclude Include="optimize.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
