@@ -1,15 +1,20 @@
 Mr bean
 023456789
 29s134567
-position [4;7]
+position [0;0]
 =
 dominic toretto 
 0987654321
 30f234567
-position [8;3]
+position [1;1]
 =
-dominic dang
-0987654325
-30f234567
-position [6;3]
+paul walker
+0987162534
+346f7
+position [2;2]
+=
+peter quill
+1230986547
+34h67
+position [3;3]
 =
