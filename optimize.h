@@ -7,5 +7,5 @@ int** allocate(int number_of_row, int number_of_cols);
 void free_al(int** arr, int number_of_rows,int number_of_cols);
 void print_mat(int** arr, int num_of_rows, int num_of_cols);
 int** scan_mat(int** arr, int num_of_rows, int num_of_cols);
-int** make_square(int** mat, int row, int col);//for test
+void copy_mat(int** mat1, int** mat2, int row, int col);
 #endif // !optimize.h
