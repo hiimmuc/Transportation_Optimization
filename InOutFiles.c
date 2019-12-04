@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
-#include <malloc.h>
-#include <math.h>
-#include <string>
+#include "InOutFiles.h"
 
 int actualLength(const char *string) {
 //  return the actual lenght of a string (trailling spaces are not counted)
@@ -85,19 +82,6 @@ int count(const char *obj){
     return count;
 }
 /*====================================================================================================================*/
-typedef struct{
-    char* name;
-    char* phone;
-    int cip[2];//customer's initial position
-    int cfp[2];//customer's final position
-}customer;
-typedef struct{
-    char* name;
-    char* phone;
-    char* number_plt;
-    int dp[2];//driver's present position
-}driver;
-/*====================================================================================================================*/
 customer* construct_c(int num,customer *c){
     //construct all the customer c[i]
     int i;
@@ -173,48 +157,4 @@ void get_drv_dp(int**drv_dp_mat,driver *d,int numOfDrv){
         drv_dp_mat[i][0]=d[i].dp[0];
         drv_dp_mat[i][1]=d[i].dp[1];
     }
-}
-//====================================================================================================================
-
-// #include "InOutFiles.h"
-int main(){
-    int numOfCus=count("customer.txt");//count customers
-    int numOfDrv=count("driver.txt");//count drivers
-    
-    customer *c=(customer*)calloc(numOfCus,sizeof(customer));
-    // allocate memory for number of customers counted above
-    driver *d=(driver*)calloc(numOfDrv,sizeof(driver));
-    //same as above
-    construct_c(numOfCus,c);
-    construct_d(numOfDrv,d);
-    int **cus_cip_mat=allocate(numOfCus,2);//allocate memory for cip mattrix
-    get_cus_cip(cus_cip_mat,c,numOfCus);//get values for cip mattrix
-
-    int **cus_cfp_mat=allocate(numOfCus,2);//same
-    get_cus_cfp(cus_cfp_mat,c,numOfCus);//same
-
-    int **drv_dp_mat=allocate(numOfDrv,2);//same
-    get_drv_dp(drv_dp_mat,d,numOfDrv);//same
-
-    
-//print for test
-    printf_s("so khach:%d\n",numOfCus);
-    for(int i=0;i<numOfCus;i++){
-        printf_s("ten:%s\n", c[i].name);
-        printf_s("sdt:%s\n",c[i].phone);
-        printf_s("don tai:%d\t%d\n",c[i].cip[0],c[i].cip[1]);
-        printf_s("tra tai:%d\t%d\n",c[i].cfp[0],c[i].cfp[1]);
-    }
-    printf_s("so tai xe: %d\n",numOfDrv);
-    for(int i=0;i<numOfDrv;i++){
-        printf_s("ten:%s\n", d[i].name);
-        printf_s("sdt:%s\n",d[i].phone);
-        printf_s("bien so:%s\n", d[i].number_plt);
-        printf_s("vi tri hien tai:%d\t%d\n",d[i].dp[0],d[i].dp[1]);
-    }
-    print_mat(cus_cip_mat,numOfCus,2);
-    print_mat(cus_cfp_mat,numOfCus,2);
-    print_mat(drv_dp_mat,numOfDrv,2);
-    
-    return 0;
 }
