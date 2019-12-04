@@ -1,5 +1,3 @@
-
-//nhom 8: Dang Phuong Nam, Nguyen Tai Hoang,Le Hoang Thinh :D
 #include<stdio.h>
 #include<stdlib.h>
 #include<conio.h>
@@ -239,58 +237,104 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 	/*make the assign point become -8(for team8) :D*/
 	int** ans = allocate(num_of_rows, num_of_cols);
 	int i, j, k, pos = 0;
-	int count = 0, min_num = 0;
+	int count = 0, min_row = 0, min_col = 0;
 	int num_of_task = num_of_cols;
-	int* count_row;
+	int* count_row, *count_col;
 	count_row = (int*)calloc(num_of_rows, sizeof(int));
+	count_col = (int*)calloc(num_of_cols, sizeof(int));
 	copy_mat(ans, assignable_mat, num_of_rows, num_of_cols);
 	//count zero in each row
 	for (i = 0; i < num_of_rows; ++i) {
 		for (j = 0; j < num_of_cols; ++j) {
 			if (ans[i][j] == 0) {
 				count_row[i] += 1;
+				count_col[j] += 1;
 			}
 		}
 	}
-	min_num = find_min(count_row, num_of_cols);
-	while (count != num_of_task) {
-		for (i = 0; i < num_of_rows; ++i) {
-			if (count_row[i] == min_num) {
-				for (j = pos; j < num_of_cols; ++j) {
-					if (ans[i][j] == 0) {
-						++count;
-						//draw -1 line through all num of elements in 2 line intersect in ans[i][j]
-						for (k = 0; k < num_of_task; ++k) {
-							ans[i][k] = -1;
-							ans[k][j] = -1; 
-						}
-						ans[i][j] = -8;//assign the choosen zero by -8
-						//reset the count_row array to zero to count again(after assign)
-						for (int a = 0; a < num_of_rows; ++a) {
-							count_row[a] = 0;
-						}
-						//count again
-						for (int a = 0; a < num_of_rows; ++a) {
-							for (int b = 0; b < num_of_cols; ++b) {
-								if (ans[a][b] == 0) {
-									count_row[a] += 1;
+	min_row = find_min(count_row, num_of_cols);
+	min_col = find_min(count_col, num_of_rows);
+	if (min_row <= min_col) {
+		while (count != num_of_task) {
+			//why cant put count row here?
+			for (i = 0; i < num_of_rows; ++i) {
+				if (count_row[i] == min_row) {
+					for (j = pos; j < num_of_cols; ++j) {
+						if (ans[i][j] == 0) {
+							++count;
+							//draw -1 line through all num of elements in 2 line intersect in ans[i][j]
+							for (k = 0; k < num_of_task; ++k) {
+								ans[i][k] = -1;
+								ans[k][j] = -1;
+							}
+							ans[i][j] = -8;//assign the choosen zero by -8
+							//reset the count_row array to zero to count again(after assign)
+							for (int a = 0; a < num_of_rows; ++a) {
+								count_row[a] = 0;
+							}
+							//count again
+							for (int a = 0; a < num_of_rows; ++a) {
+								for (int b = 0; b < num_of_cols; ++b) {
+									if (ans[a][b] == 0) {
+										count_row[a] += 1;
+									}
 								}
 							}
 						}
 					}
-				}
-				//set the covered row'value equal numofrow+1 in oder to make the other row can be the minimum
-				for (int a = 0; a < num_of_rows; ++a) {
-					if (count_row[a] == 0) { 
-						count_row[i] = num_of_rows + 1; 
+					//set the covered row'value equal numofrow+1 in oder to make the other row can be the minimum
+					for (int a = 0; a < num_of_rows; ++a) {
+						if (count_row[a] == 0) {
+							count_row[i] = num_of_rows + 1;
+						}
 					}
+					//find min again
+					min_row = find_min(count_row, num_of_rows);
 				}
-				//find min again
-				min_num = find_min(count_row, num_of_rows);
+			}
+		}
+	}//error from here
+	count = 0;
+	if (min_col < min_row) {
+		while (count != num_of_task) {
+			for (i = 0; i < num_of_cols; ++i) {
+				if (count_col[i] == min_col) {
+					for (j = 0; j < num_of_rows; ++j) {
+						if (ans[j][i] == 0) {
+							++count;
+							//draw -1 line through all num of elements in 2 line intersect in ans[i][j]
+							for (k = 0; k < num_of_task; ++k) {
+								ans[j][k] = -1;
+								ans[k][i] = -1;
+							}
+							ans[j][i] = -8;//assign the choosen zero by -8
+							//reset the count_col array to zero to count again(after assign)
+							for (int a = 0; a < num_of_cols; ++a) {
+								count_col[a] = 0;
+							}
+							//count again
+							for (int a = 0; a < num_of_cols; ++a) {
+								for (int b = 0; b < num_of_rows; ++b) {
+									if (ans[b][a] == 0) {
+										count_col[a] += 1;
+									}
+								}
+							}
+						}
+					}
+					//set the covered col'value equal numofcol+1 in oder to make the other col can be the minimum
+					for (int a = 0; a < num_of_cols; ++a) {
+						if (count_col[a] == 0) {
+							count_col[i] = num_of_cols + 1;
+						}
+					}
+					//find min again
+					min_col = find_min(count_col, num_of_rows);
+				}
 			}
 		}
 	}
-	free(count_row);
+	free(count_row); free(count_col);
 	return ans;
 }//not all case
 /*==================================================================*/
@@ -323,9 +367,7 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	int temp1 = num_of_rows, temp2 = num_of_cols;
 	int num_task = num_of_rows <= num_of_cols ? num_of_cols : num_of_rows;//num of task equal the bigger one
 	int** process_mat = allocate(num_of_rows, num_of_cols);
-	int** temp;
-	int** pre_ans;
-	int** final_result;
+	int** temp, ** pre_ans, ** final_result;
 	//copy to process mat
 	copy_mat(process_mat, input_mat, num_of_rows, num_of_cols);
 	//check whether the input_mat is square or not, if not make it squared
@@ -339,23 +381,17 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	final_result = allocate(num_task, 3);
 //======>step1
 	pre_ans = subtract_mat_1(process_mat, num_of_rows,num_of_cols);
-	//printf_s("\nreduced mat:\n"); print_mat(pre_ans, num_of_rows, num_of_cols);//for test
 	 do {
 		copy_mat(temp, process_mat, num_of_rows, num_of_cols);
 		number_of_crossed_lines = count_crossed_line(temp, num_of_rows, num_of_cols);
-		//printf("masked mat:\n"); print_mat(temp, num_of_rows, num_of_cols); printf_s("\nnumber of crossed line: %d\n", number_of_crossed_lines);
 		if (number_of_crossed_lines != num_task) {
-			process_mat = subtract_mat_2(process_mat, temp, num_of_rows, num_of_cols);
-			//print_mat(process_mat, num_of_rows, num_of_cols);//after 2nd subtract//test
+			process_mat = subtract_mat_2(process_mat, temp, num_of_rows, num_of_cols);//after 2nd subtract
 		}
 	} while (number_of_crossed_lines != (num_task));
 		copy_mat(pre_ans, process_mat, num_of_rows, num_of_cols);
 	if (number_of_crossed_lines == (num_task)) {
-		printf_s("we are done\n");
 		//we can assign
 		pre_ans = assign_mat(process_mat, num_of_rows, num_of_cols);
-		printf_s("assigned mat:");
-		print_mat(pre_ans, num_of_rows, num_of_cols);
 		//convert to output mat(2xn)
 		printf_s("\nresult: \nthe number in square bracket is the order of that person in matrix\n");
 		for (i = 0; i < num_of_rows; ++i) {

@@ -8,4 +8,5 @@ void free_al(int** arr, int number_of_rows,int number_of_cols);
 void print_mat(int** arr, int num_of_rows, int num_of_cols);
 int** scan_mat(int** arr, int num_of_rows, int num_of_cols);
 void copy_mat(int** mat1, int** mat2, int row, int col);
+int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols);
 #endif // !optimize.h
