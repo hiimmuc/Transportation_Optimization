@@ -25,7 +25,7 @@ int** calculate_distances(int** drivers, int** customers_initp, int** customers_
 	return distances;
 }
 
-int** calculate_time_and_fee(int** input_mat, int** drivers, int** customers_initp, int** customers_finalp,int number_of_drivers,int num_of_cus)
+int** calculate_time_and_fee(int** input_mat, int** drivers, int** customers_initp, int** customers_finalp, int number_of_drivers, int num_of_cus,int present_time)
 {
 	int number_of_tasks = number_of_drivers <= num_of_cus ? num_of_cus : number_of_drivers;
 	int distance_start = 0;
@@ -41,8 +41,8 @@ int** calculate_time_and_fee(int** input_mat, int** drivers, int** customers_ini
 						distance_start = distance_start + abs(drivers[a][c] - customers_initp[b][c]);
 						distance_final = distance_final + abs(customers_initp[b][c] - customers_finalp[b][c]);
 					}
-					ans[i][2] = (int)((distance_start * 60) / vel);
-					ans[i][3] = (int)((distance_final * 60) / vel);
+					ans[i][2] = (int)(((distance_start * 60) / vel)-present_time);
+					ans[i][3] = (int)(((distance_final * 60) / vel)-present_time);
 					ans[i][4] = (int)(input_mat[i][2] * price);
 					distance_final = 0;
 					distance_start = 0;

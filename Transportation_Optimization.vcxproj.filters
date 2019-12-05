@@ -21,8 +21,20 @@
     <ClCompile Include="draft.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="calculation_func.c">
+    <ClCompile Include="InOutFiles.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculation_func.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test_algorithm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test_IO_files.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_calculation.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -32,5 +44,16 @@
     <ClInclude Include="calculation_func.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InOutFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="customer.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="driver.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

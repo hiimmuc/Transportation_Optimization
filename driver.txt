@@ -1,0 +1,20 @@
+Mr bean
+023456789
+29s134567
+position [0;0]
+=
+dominic toretto 
+0987654321
+30f234567
+position [1;1]
+=
+paul walker
+0987162534
+346f7
+position [2;2]
+=
+peter quill
+1230986547
+34h67
+position [3;3]
+=

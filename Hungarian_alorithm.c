@@ -17,7 +17,7 @@ int** allocate(int number_of_row, int number_of_cols) {
 }
 //free func
 void free_al(int** arr,int number_of_rows,int number_of_cols) {
-	for (int i = 1; i < number_of_rows; i++) {
+	for (int i = 0; i < number_of_rows; ++i) {
 		free(arr[i]);
 	}
 	free(arr);
@@ -113,12 +113,7 @@ int** subtract_mat_2(int** mat,int** masked_mat, int num_of_rows, int num_of_col
 			}
 		}
 	}
-	printf_s("sorted arr: \n");
-	for (i = 0; i < k; ++i) {
-		printf_s("%d ", temp[i]);
-	}
 	min = find_min(temp, k);
-	printf_s("\nmin value in array: %d \n", min);
 	//3 subtract
 	for (i = 0; i < num_of_rows; ++i) {
 		for (j = 0; j < num_of_cols; ++j) {
@@ -372,6 +367,7 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	copy_mat(process_mat, input_mat, num_of_rows, num_of_cols);
 	//check whether the input_mat is square or not, if not make it squared
 	if (num_of_rows != num_of_cols) {
+		input_mat = make_square(input_mat, num_of_rows, num_of_cols); print_mat(input_mat, num_task, num_task);
 		process_mat = make_square(process_mat, num_of_rows, num_of_cols);
 		num_of_cols = num_task;
 		num_of_rows = num_task;
@@ -393,23 +389,57 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 		//we can assign
 		pre_ans = assign_mat(process_mat, num_of_rows, num_of_cols);
 		//convert to output mat(2xn)
-		printf_s("\nresult: \nthe number in square bracket is the order of that person in matrix\n");
+		//printf_s("\n/==========result=========/\n");
 		for (i = 0; i < num_of_rows; ++i) {
 			for (j = 0; j < num_of_cols; ++j) {
 				if (pre_ans[i][j] == -8) {
-					printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
+					//printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
 					final_result[k][0] = i;
 					final_result[k][1] = j;
-					final_result[k][2] = input_mat[i][j];//error when 2x3 because input_mat is not square 
+					final_result[k][2] = input_mat[i][j];
 					++k;
 				}
 			}
 		}
 	}
-	num_of_rows = temp1;
-	num_of_cols = temp2;
 	free_al(temp, num_of_rows, num_of_cols);
 	free_al(process_mat, num_of_rows, num_of_cols);
 	free_al(pre_ans, num_of_rows, num_of_cols);
+	num_of_rows = temp1;
+	num_of_cols = temp2;
 	return final_result;
 }
+//void print_map(int** driver, int** cus_initp, int numd, int numc)
+//{
+//	printf_s("\n/*===============MAP==============*/\n");
+//	printf_s("\n");
+//	for (int i = 9; i >= 0; --i) {
+//		printf_s("%d", i);
+//		for (int a = 0; a < numd; ++a) {
+//				for (int j = 1; j <=9; ++j)
+//				{
+//					
+//					if (j == driver[a][0] && i == driver[a][1]) {
+//						printf_s("D---");
+//					}
+//					else
+//						printf_s("|---");
+//					if (j == cus_initp[a][0] && i == cus_initp[a][1]) {
+//						printf_s("C---");
+//					}
+//					if (j == 9) {
+//						printf_s("|");
+//						break;
+//					}
+//					else
+//						printf_s("|---");
+//				}
+//				printf_s("\n");
+//			
+//		}
+//	}
+//	for (int i = 0; i <= 9; i++) {
+//		printf_s("%2d  ", i);
+//	}
+//
+//} //logical error

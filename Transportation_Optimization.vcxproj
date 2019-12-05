@@ -127,13 +127,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="calculation_func.c" />
+    <ClCompile Include="Calculation_func.cpp" />
     <ClCompile Include="draft.c" />
     <ClCompile Include="Hungarian_alorithm.c" />
+    <ClCompile Include="InOutFiles.cpp" />
+    <ClCompile Include="test_algorithm.c" />
+    <ClCompile Include="Test_calculation.c" />
+    <ClCompile Include="test_IO_files.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="calculation_func.h" />
+    <ClInclude Include="InOutFiles.h" />
     <ClInclude Include="optimize.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="customer.txt" />
+    <Text Include="driver.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
