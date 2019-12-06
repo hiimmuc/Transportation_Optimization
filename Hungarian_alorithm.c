@@ -53,7 +53,44 @@ void copy_mat(int** arr1, int** arr2,int numofrows,int numofcols) {
 		}
 	}
 }
-//find minimum element which is different from zero
+//print_map
+//void print_map(int** driver, int** cus_initp, int numd, int numc)
+//{
+//	printf_s("\n/*===============MAP==============*/\n");
+//	printf_s("\n");
+//	for (int i = 9; i >= 0; --i) {
+//		printf_s("%d", i);
+//		for (int a = 0; a < numd; ++a) {
+//				for (int j = 1; j <=9; ++j)
+//				{
+//					
+//					if (j == driver[a][0] && i == driver[a][1]) {
+//						printf_s("D---");
+//					}
+//					else
+//						printf_s("|---");
+//					if (j == cus_initp[a][0] && i == cus_initp[a][1]) {
+//						printf_s("C---");
+//					}
+//					if (j == 9) {
+//						printf_s("|");
+//						break;
+//					}
+//					else
+//						printf_s("|---");
+//				}
+//				printf_s("\n");
+//			
+//		}
+//	}
+//	for (int i = 0; i <= 9; i++) {
+//		printf_s("%2d  ", i);
+//	}
+//
+//} //logical error
+
+//===========================MAIN PART====================================//
+//find minimum element 
 int find_min(int *arr, int size) {
 	int min=arr[0];
 	for (int i = 0; i < size; ++i) {
@@ -62,7 +99,13 @@ int find_min(int *arr, int size) {
 
 	return min;
 }
-//===========================MAIN PART====================================//
+int find_max(int*arr, int size) {
+	int max = arr[0];
+	for (int i = 0; i < size; ++i) {
+		max = max >= arr[i] ? max : arr[i];
+	}
+	return max;
+}
 //subtract func in step 1 and 2
 int** subtract_mat_1(int** mat, int num_of_rows, int num_of_cols) {
 	int min = 0;
@@ -135,7 +178,7 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 	  2.draw the line -1 through all row have more zeros than minimun row_zero[i] and through all cols have the zero elements in non-crossed rows
 	  3.create masked mat which present where the crossed lines are and where the intersections of line are
 	  4.count the number of lines and return it*/
-	int num=0;
+	int num = 0, max = 0;
 	int i, j, k = 0;
 	int* col_zero, * row_zero, * crossed_row, *crossed_col;
 	col_zero = (int*)calloc(num_of_cols, sizeof(int));
@@ -143,7 +186,7 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 	crossed_row = (int*)calloc(num_of_rows, sizeof(int));
 	crossed_col = (int*)calloc(num_of_cols, sizeof(int));
 	int** crossed_mat = allocate(num_of_rows, num_of_cols);
-	int**process_mat= allocate(num_of_rows, num_of_cols);
+	int** process_mat = allocate(num_of_rows, num_of_cols);
 	copy_mat(process_mat, mat, num_of_rows, num_of_cols);
 //count zero in row
 	for (i = 0; i < num_of_rows; ++i) {
@@ -153,38 +196,91 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 			}
 		}
 	}
-	//draw line in row by assign -1 for all elements
-	int temp1, temp2;
-	temp1 = num_of_rows;
-	temp2 = row_zero[0];
-	for (i = 1; i < num_of_rows; ++i) {
-		temp2 = temp2 < row_zero[i] ? temp2 : row_zero[i];
-	}//find min number of row_zero
-	while (temp1 > temp2) {
-		for (i = 0; i < num_of_rows; ++i) {
-			if (row_zero[i] == temp1) {
-				for (j = 0; j < num_of_cols; ++j) {
-					process_mat[i][j] = (-1);
-					crossed_mat[i][j] += 1;
-				}
-			}
-		}
-		--temp1;
-	}
-//count zero in col
 	for (i = 0; i < num_of_cols; ++i) {
 		for (j = 0; j < num_of_rows; ++j) {
 			if (process_mat[j][i] == 0) {
-				col_zero[i] = col_zero[i] + 1;
+				col_zero[i] += 1;
 			}
 		}
 	}
-//draw line in col by assign -1 for all elements
-	for (i = 0; i < num_of_cols; ++i) {
-		if (col_zero[i]>0) {
+
+	if (find_max(col_zero, num_of_cols) <= find_max(row_zero, num_of_rows)) {
+		//draw line in row by assign -1 for all elements
+		int temp1, temp2;
+		temp1 = num_of_rows;
+		temp2 = row_zero[0];
+		for (i = 1; i < num_of_rows; ++i) {
+			temp2 = temp2 < row_zero[i] ? temp2 : row_zero[i];
+		}//find min number of row_zero
+		while (temp1 > temp2) {
+			for (i = 0; i < num_of_rows; ++i) {
+				if (row_zero[i] == temp1) {
+					for (j = 0; j < num_of_cols; ++j) {
+						process_mat[i][j] = (-1);
+						crossed_mat[i][j] += 1;
+					}
+				}
+			}
+			--temp1;
+		}
+		for (i = 0; i < num_of_rows; ++i) {
+			col_zero[i] = 0;
+		}
+		//count zero in col
+		for (i = 0; i < num_of_cols; ++i) {
 			for (j = 0; j < num_of_rows; ++j) {
-				process_mat[j][i] = -1;
-				crossed_mat[j][i] = crossed_mat[j][i] + 1;
+				if (process_mat[j][i] == 0) {
+					col_zero[i] = col_zero[i] + 1;
+				}
+			}
+		}
+		//draw line in col by assign -1 for all elements
+		for (i = 0; i < num_of_cols; ++i) {
+			if (col_zero[i] > 0) {
+				for (j = 0; j < num_of_rows; ++j) {
+					process_mat[j][i] = -1;
+					crossed_mat[j][i] = crossed_mat[j][i] + 1;
+				}
+			}
+		}
+	}
+	if (find_max(col_zero, num_of_cols) > find_max(row_zero, num_of_rows)) {
+		//draw line in row by assign -1 for all elements
+		int temp1, temp2;
+		temp1 = num_of_cols;
+		temp2 = col_zero[0];
+		for (i = 1; i < num_of_cols; ++i) {
+			temp2 = temp2 < col_zero[i] ? temp2 : col_zero[i];
+		}//find min number of col_zero
+		while (temp1 > temp2) {
+			for (i = 0; i < num_of_cols; ++i) {
+				if (col_zero[i] == temp1) {
+					for (j = 0; j < num_of_cols; ++j) {
+						process_mat[j][i] = (-1);
+						crossed_mat[j][i] += 1;
+					}
+				}
+			}
+			--temp1;
+		}
+		for (i = 0; i < num_of_rows; ++i) {
+				row_zero[i] = 0;
+		}
+		//count zero in row
+		for (i = 0; i < num_of_rows; ++i) {
+			for (j = 0; j < num_of_cols; ++j) {
+				if (process_mat[i][j] == 0) {
+					row_zero[i] = row_zero[i] + 1;
+				}
+			}
+		}
+		//draw line in col by assign -1 for all elements
+		for (i = 0; i < num_of_rows; ++i) {
+			if (row_zero[i] > 0) {
+				for (j = 0; j < num_of_cols; ++j) {
+					process_mat[i][j] = -1;
+					crossed_mat[i][j] += 1;
+				}
 			}
 		}
 	}
@@ -219,7 +315,6 @@ int count_crossed_line(int** mat, int num_of_rows, int num_of_cols) {
 			}
 		}
 	}
-	/*printf_s("\ncrossed mat: \n"); print_mat(process_mat, num_of_cols, num_of_rows);*///test
 	copy_mat(mat, crossed_mat,num_of_rows,num_of_cols);//copy crossed mat to temp
 	free_al(crossed_mat, num_of_rows, num_of_cols);
 	free_al(process_mat, num_of_rows, num_of_cols);
@@ -288,7 +383,7 @@ int** assign_mat(int** assignable_mat, int num_of_rows, int num_of_cols) {
 				}
 			}
 		}
-	}//error from here
+	}
 	count = 0;
 	if (min_col < min_row) {
 		while (count != num_of_task) {
@@ -367,7 +462,7 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	copy_mat(process_mat, input_mat, num_of_rows, num_of_cols);
 	//check whether the input_mat is square or not, if not make it squared
 	if (num_of_rows != num_of_cols) {
-		input_mat = make_square(input_mat, num_of_rows, num_of_cols); print_mat(input_mat, num_task, num_task);
+		input_mat = make_square(input_mat, num_of_rows, num_of_cols);
 		process_mat = make_square(process_mat, num_of_rows, num_of_cols);
 		num_of_cols = num_task;
 		num_of_rows = num_task;
@@ -380,20 +475,24 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	 do {
 		copy_mat(temp, process_mat, num_of_rows, num_of_cols);
 		number_of_crossed_lines = count_crossed_line(temp, num_of_rows, num_of_cols);
+		printf_s("\ncrossed mat:"); print_mat(temp, num_of_rows, num_of_cols);
+		printf_s("\nnumber of crossed lines: %d", number_of_crossed_lines);
 		if (number_of_crossed_lines != num_task) {
 			process_mat = subtract_mat_2(process_mat, temp, num_of_rows, num_of_cols);//after 2nd subtract
+			print_mat(process_mat, num_of_rows, num_of_cols);
 		}
 	} while (number_of_crossed_lines != (num_task));
 		copy_mat(pre_ans, process_mat, num_of_rows, num_of_cols);
-	if (number_of_crossed_lines == (num_task)) {
+	if (number_of_crossed_lines == num_task) {
 		//we can assign
 		pre_ans = assign_mat(process_mat, num_of_rows, num_of_cols);
+		print_mat(pre_ans, num_of_rows, num_of_cols);
 		//convert to output mat(2xn)
-		//printf_s("\n/==========result=========/\n");
+		printf_s("\n/==========result=========/\n");
 		for (i = 0; i < num_of_rows; ++i) {
 			for (j = 0; j < num_of_cols; ++j) {
 				if (pre_ans[i][j] == -8) {
-					//printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
+					printf_s("\ndriver %d[%d] will take customer %d[%d]", i + 1, i, j + 1, j);
 					final_result[k][0] = i;
 					final_result[k][1] = j;
 					final_result[k][2] = input_mat[i][j];
@@ -409,37 +508,3 @@ int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols)
 	num_of_cols = temp2;
 	return final_result;
 }
-//void print_map(int** driver, int** cus_initp, int numd, int numc)
-//{
-//	printf_s("\n/*===============MAP==============*/\n");
-//	printf_s("\n");
-//	for (int i = 9; i >= 0; --i) {
-//		printf_s("%d", i);
-//		for (int a = 0; a < numd; ++a) {
-//				for (int j = 1; j <=9; ++j)
-//				{
-//					
-//					if (j == driver[a][0] && i == driver[a][1]) {
-//						printf_s("D---");
-//					}
-//					else
-//						printf_s("|---");
-//					if (j == cus_initp[a][0] && i == cus_initp[a][1]) {
-//						printf_s("C---");
-//					}
-//					if (j == 9) {
-//						printf_s("|");
-//						break;
-//					}
-//					else
-//						printf_s("|---");
-//				}
-//				printf_s("\n");
-//			
-//		}
-//	}
-//	for (int i = 0; i <= 9; i++) {
-//		printf_s("%2d  ", i);
-//	}
-//
-//} //logical error
