@@ -41,7 +41,7 @@ with actual length (no spaces character at the end) */
     //so this make 'line' contains a whole line with minimum size
     free (buf);
     fclose(fileName);
-    
+    strtok(line,"\n");
     return line;
     // delete line;
 }
@@ -118,28 +118,28 @@ driver* constructD(int num,driver *d){
     return d;
 }
 //====================================================================================================================
-int** allocate(int number_of_row, int number_of_cols) {
-	int** arr = (int**)malloc(number_of_row* sizeof(int*));
-	for (int i = 0; i < number_of_row; ++i) {
-		arr[i] = (int*)calloc(number_of_cols, sizeof(int));
-	}
-	if (arr == NULL)
-	{
-		printf_s("can not allocate memory...");
-		exit(0);
-	}
-	return arr;
-}
-void printMat(int** arr, int num_of_rows, int num_of_cols)
-{
-	printf_s("\n");
-	for (int i = 0; i < num_of_rows; i++) {
-		for (int j = 0; j < num_of_cols; j++) {
-			printf("%-4d", arr[i][j]);
-		}
-		printf("\n");
-	}
-}
+// int** allocate(int number_of_row, int number_of_cols) {
+// 	int** arr = (int**)malloc(number_of_row* sizeof(int*));
+// 	for (int i = 0; i < number_of_row; ++i) {
+// 		arr[i] = (int*)calloc(number_of_cols, sizeof(int));
+// 	}
+// 	if (arr == NULL)
+// 	{
+// 		printf_s("can not allocate memory...");
+// 		exit(0);
+// 	}
+// 	return arr;
+// }
+// void printMat(int** arr, int num_of_rows, int num_of_cols)
+// {
+// 	printf_s("\n");
+// 	for (int i = 0; i < num_of_rows; i++) {
+// 		for (int j = 0; j < num_of_cols; j++) {
+// 			printf("%-4d", arr[i][j]);
+// 		}
+// 		printf("\n");
+// 	}
+// }
 //===================================================================================================================
 void getCusCip(int**CusCipMat,customer *c,int numOfCus){
     //put customers's initial position to CusCipMat which is allocated in main function
@@ -148,11 +148,11 @@ void getCusCip(int**CusCipMat,customer *c,int numOfCus){
         CusCipMat[i][1]=c[i].cip[1];
     }
 }
-void getCusCfp(int**CusCfpMat,customer *c,int numOfCus){
+void getCusCfp(int**cusCipMat,customer *c,int numOfCus){
     //same
     for (int i=0;i<numOfCus;i++){
-        CusCfpMat[i][0]=c[i].cfp[0];
-        CusCfpMat[i][1]=c[i].cfp[1];
+        cusCipMat[i][0]=c[i].cfp[0];
+        cusCipMat[i][1]=c[i].cfp[1];
     }
 }
 void getDrvDp(int**DrvDpMat,driver *d,int numOfDrv){
@@ -162,3 +162,38 @@ void getDrvDp(int**DrvDpMat,driver *d,int numOfDrv){
         DrvDpMat[i][1]=d[i].dp[1];
     }
 }
+billForCus *constructBill(int num, billForCus *bill, int** timeFeeMat, customer *c,driver *d){
+    // for test, incompleted, fields must be assigned with correct linked couple
+    int i;
+    for(i=0;i<num;i++){
+        int cus=timeFeeMat[i][1];
+
+        bill[i].cusName=c[cus].name;
+        // strtok(bill[i].cusName,"\n");
+        // strcat(bill[i].cusName,".txt");
+        // int drv=timeFeeMat[i][1];
+        bill[i].drvName=d[i].name;
+        bill[i].pltNum=d[i].numberPlt;
+        bill[i].fee=timeFeeMat[i][4];
+        bill[i].time1=timeFeeMat[i][2];
+        bill[i].time2=timeFeeMat[i][3];
+    }
+    return bill;
+}
+void printBill(int numOfBill,billForCus *bill){
+    FILE* fp;
+    char* buf;
+    char* filename;
+    int i;
+    for(i=0;i<numOfBill;i++){
+        filename=(char*)malloc((strlen(bill[i].cusName)+7)*sizeof(char));
+        buf=(char*)malloc(500*sizeof(char));
+        sprintf(filename,"%s.txt",bill[i].cusName);
+        fp=fopen(filename,"w+");
+        sprintf(buf,"Your driver: %s\t plate number:%s\n Your fee: %d\n estimate departure time: %d\n estimate arrival time: %d\n",bill[i].drvName,bill[i].pltNum,bill[i].fee,bill[i].time1,bill[i].time2);
+        fputs(buf,fp);
+        free(buf);
+        free(filename);
+        fclose(fp);
+    }
+}       
