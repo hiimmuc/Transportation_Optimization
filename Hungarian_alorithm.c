@@ -88,9 +88,8 @@ void copy_mat(int** arr1, int** arr2,int numofrows,int numofcols) {
 //	}
 //
 //} //logical error
-
 //===========================MAIN PART====================================//
-//find minimum element 
+//find minimum element  //errors
 int find_min(int *arr, int size) {
 	int min=arr[0];
 	for (int i = 0; i < size; ++i) {
