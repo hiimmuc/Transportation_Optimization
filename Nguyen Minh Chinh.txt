@@ -1,0 +1,4 @@
+Your driver: ghost rider	 plate number:29s134567
+ Your fee: 150000
+ estimate departure time: 8
+ estimate arrival time: 22

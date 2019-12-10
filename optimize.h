@@ -14,7 +14,7 @@ void copy_mat(int** mat1, int** mat2, int row, int col);
 //===================main function=====================//
 int** hungarian_algo(int** input_mat, int num_of_rows, int num_of_cols);
 //beta
-//void print_map(int** driver, int** cus_initp, int numd, int numc);
+void print_map(int** driver, int** cus_initp, int numd, int numc);
 #ifdef __cplusplus
 }
 #endif

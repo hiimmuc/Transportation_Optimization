@@ -1,30 +1,16 @@
 Bui Hai Dang
 0388621712
-Departing point: [1;2]
-Arriving point: [3;4]
+Departing point: [1;1]
+Arriving point: [2;2]
 =
 Nguyen Minh Chinh
 0123456789
-Departing point: [5;6]
-Arriving point: [7;8]
+Departing point: [2;9]
+Arriving point: [7;3]
 =
-Doan Duy Thiem
-0964750517
-Departing point: [9;1]
-Arriving point: [6;7]
+Dang Phuong Nam
+0912582757
+Departing point: [8;4]
+Arriving point: [3;7]
 =
-Nguyen tien dung
-0389765421
-Departing point: [5;6]
-Arriving point: [2;1]
-=
-cap
-09876
-Departing [6;7]
-Arriving [9;6]
-=
-loki
-987654
-Departing [4;5]
-Arriving [2;8]
-=
+end

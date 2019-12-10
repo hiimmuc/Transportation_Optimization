@@ -3,9 +3,9 @@
 #include"optimize.h"
 #include"calculation_func.h"
 #define vel 30
-#define price 10000
+#define price 10 //10k
 
-int** calculate_distances(int** drivers, int** customers_initp, int** customers_finalp, int num_of_customers, int  num_of_drivers) {
+int** calculate_distances(int** init_distance, int** drivers, int** customers_initp, int** customers_finalp, int num_of_customers, int  num_of_drivers,int time) {
 	int** distances = allocate(num_of_drivers, num_of_customers);
 	int distance = 0, distance_final = 0, distance_start = 0;
 	for (int i = 0; i < num_of_drivers; i++)
@@ -19,7 +19,7 @@ int** calculate_distances(int** drivers, int** customers_initp, int** customers_
 				distance_final = distance_final + abs(customers_initp[j][k] - customers_finalp[j][k]);//i fix some error here
 				distance = distance_final + distance_start;
 			}
-			distances[i][j] = distance;
+			distances[i][j] = distance + init_distance[i][0] - ((vel * time) / 60);
 			distance = distance_final = distance_start = 0;
 		};
 	return distances;
@@ -38,12 +38,12 @@ int** calculate_time_and_fee(int** input_mat, int** drivers, int** customers_ini
 			for (int b = 0; b < num_of_cus; ++b) {
 				if (ans[i][0] == a && ans[i][1] == b) {
 					for (int c = 0; c < 2; ++c) {
-						distance_start = distance_start + abs(drivers[a][c] - customers_initp[b][c]);
+						distance_start = distance_start + abs(drivers[a][c] - customers_initp[b][c]) + input_mat[i][0] - ((vel * present_time) / 60);
 						distance_final = distance_final + abs(customers_initp[b][c] - customers_finalp[b][c]);
 					}
 					ans[i][2] = (int)(((distance_start * 60) / vel));
 					ans[i][3] = (int)(((distance_final * 60) / vel));
-					ans[i][4] = (int)(input_mat[i][2] * price);
+					ans[i][4] = (int)(distance_final* price);
 					distance_final = 0;
 					distance_start = 0;
 				}
