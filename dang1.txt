@@ -1,4 +1,0 @@
-Your driver: paul	 plate number:29A12345
- Your fee: 2
- estimate departure time: 4
- estimate arrival time: 5
