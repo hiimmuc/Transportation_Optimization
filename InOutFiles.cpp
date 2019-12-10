@@ -190,7 +190,10 @@ void printBill(int numOfBill, billForCus* bill) {
         buf = (char*)malloc(500 * sizeof(char));
         sprintf(filename, "%s.txt", bill[i].cusName);
         fp = fopen(filename, "w+");
-        sprintf(buf, "Your driver: %s\t plate number:%s\n Your fee: %d\n estimate departure time: %d\n estimate arrival time: %d\n", bill[i].drvName, bill[i].pltNum, bill[i].fee, bill[i].time1, bill[i].time2);
+        sprintf(buf, "Your driver: %s\t plate number:[%s]\n\n\
+        Estimate departure time: %d minutes\n\
+        Estimate arrival time: %d minutes\n\
+        Please prepare your fee: %d,000 VND", bill[i].drvName, bill[i].pltNum, bill[i].time1, bill[i].time2, bill[i].fee);
         fputs(buf, fp);
         free(buf);
         free(filename);
