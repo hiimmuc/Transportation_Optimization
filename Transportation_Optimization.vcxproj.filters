@@ -50,10 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="customer.txt">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </Text>
     <Text Include="driver.txt">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
 </Project>
